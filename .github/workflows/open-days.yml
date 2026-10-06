@@ -1,0 +1,67 @@
+# Open the day pages each morning, Pacific time.
+#
+# MASTER COPY: C:/Dev/frequency-almanac/tools/site/opener/open-days.yml in the
+# app repo; build_site_pages.py copies it here on every release. Edit the master.
+#
+# Every day before today (America/Los_Angeles) gets its open page, readable
+# without JavaScript; today and every later day stay sealed. The work is done by
+# tools/open_days.mjs, the same file the release runs, reading the sealed
+# payloads in d/days.json. It needs no dependencies and no secrets, and it
+# commits only when something changed.
+#
+# Two schedules because cron runs in UTC: 07:20 UTC is 00:20 in summer (PDT)
+# and 08:20 UTC is 00:20 in winter (PST). Whichever runs before Pacific
+# midnight finds nothing new and commits nothing.
+name: Open past days
+
+on:
+  schedule:
+    - cron: "20 7 * * *"
+    - cron: "20 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: open-days
+  cancel-in-progress: false
+
+jobs:
+  open:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Open every day before today (America/Los_Angeles)
+        run: node tools/open_days.mjs --site .
+
+      - name: Commit and push if anything changed
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Nothing new to open."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Open the day pages before $(TZ=America/Los_Angeles date +%F)"
+          git push
+          echo "pushed=1" >> "$GITHUB_OUTPUT"
+
+      # A push made with the workflow token may not start a Pages build on its
+      # own, so ask for one. If Pages deploys from an Actions workflow instead
+      # of the branch, this call is refused and the step says so without
+      # failing the run.
+      - name: Ask GitHub Pages to rebuild
+        if: steps.commit.outputs.pushed == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages build request refused; check the Pages source setting."

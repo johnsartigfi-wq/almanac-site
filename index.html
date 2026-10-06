@@ -48,6 +48,10 @@
   .getapp { display: none; margin-top: 30px; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; }
   .getapp a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--goldDeep); padding-bottom: 2px; }
   .has-today .getapp { display: block; }
+  /* The past days, one link per month, written by tools/open_days.mjs. */
+  .months { margin-top: 44px; font-size: 16px; line-height: 2; color: var(--soft); }
+  .months .months-head { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; }
+  .months a { color: var(--gold); text-decoration: none; white-space: nowrap; }
   footer { margin-top: 56px; font-size: 13px; color: var(--soft); line-height: 2; }
   footer a { color: var(--soft); }
   .fine { font-size: 12px; margin-top: 10px; font-style: italic; }
@@ -138,13 +142,15 @@ window.__almanacDays=/*DAYS-START*/{"10768728":"p8QF+XVEitSjmPiZmaTiOms=","11768
   </p>
 
   <div class="badges">
-    <a href="https://apps.apple.com/app/id6791434766"><img src="badge-appstore.svg" alt="Download on the App Store" width="162" height="54"></a>
-    <a href="https://play.google.com/store/apps/details?id=com.vayelion.frequencyalmanac"><img src="badge-googleplay.png" alt="Get it on Google Play" width="181" height="54"></a>
+    <a href="https://apps.apple.com/app/apple-store/id6791434766?pt=129156050&amp;ct=site&amp;mt=8"><img src="badge-appstore.svg" alt="Download on the App Store" width="162" height="54"></a>
+    <a href="https://play.google.com/store/apps/details?id=com.vayelion.frequencyalmanac&amp;referrer=utm_source%3Dalmanac_site%26utm_medium%3Dsite%26utm_campaign%3Dhome"><img src="badge-googleplay.png" alt="Get it on Google Play" width="181" height="54"></a>
   </div>
 
   <p class="getapp"><a href="#today">Get the app</a></p>
 
   <a class="cta" href="https://www.etsy.com/shop/VayelionSoulMaps">Soul Frequency Blueprints, on Etsy</a>
+
+  <!--MONTHS-START--><nav class="months" aria-label="Past days"><p class="months-head">Past days, open to read</p><p><a href="d/2026-07/">July 2026</a> &nbsp;&#10022;&nbsp; <a href="d/2026-08/">August 2026</a> &nbsp;&#10022;&nbsp; <a href="d/2026-09/">September 2026</a> &nbsp;&#10022;&nbsp; <a href="d/2026-10/">October 2026</a></p></nav><!--MONTHS-END-->
 
   <footer>
     <a href="privacy.html">Privacy</a> &nbsp;&#10022;&nbsp;

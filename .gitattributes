@@ -1,0 +1,5 @@
+# Every text file is LF on every machine, so the release on Windows and the
+# daily Action on Linux write and compare the same bytes.
+* text=auto eol=lf
+*.png binary
+*.jpg binary

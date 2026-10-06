@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /tools/
+Allow: /
+
+Sitemap: https://almanac.vayelion.com/sitemap.xml
